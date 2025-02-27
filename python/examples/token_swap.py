@@ -22,13 +22,13 @@ Examples:
 {
     "Account": "ratB3Rp7pcid4hzwSYTWiqWXYXFmWUFDv1",
     "TransactionType": "TokenSwapPropose",
-    "Account2": "rPTScb8m3wq6r3Ys93Ec5at7LYDmWrtndi",
+    "AccountOther": "rPTScb8m3wq6r3Ys93Ec5at7LYDmWrtndi",
     "Amount": {
         "currency": "EUR",
         "issuer": "rnz5f1MFcgbVxzYhU5hUKbKquEJHJady5K",
         "value": "12"
     },
-    "Amount2": {
+    "AmountOther": {
         "currency": "USD",
         "issuer": "rnz5f1MFcgbVxzYhU5hUKbKquEJHJady5K",
         "value": "33"
@@ -39,14 +39,14 @@ Examples:
 {
     "Account": "rPTScb8m3wq6r3Ys93Ec5at7LYDmWrtndi",
     "TransactionType": "TokenSwapAccept",
-    "Account2": "ratB3Rp7pcid4hzwSYTWiqWXYXFmWUFDv1",
+    "AccountOther": "ratB3Rp7pcid4hzwSYTWiqWXYXFmWUFDv1",
     "TokenSwapId": "5",
     "Amount": {
         "currency": "USD",
         "issuer": "rnz5f1MFcgbVxzYhU5hUKbKquEJHJady5K",
         "value": "33"
     },
-    "Amount2": {
+    "AmountOther": {
         "currency": "EUR",
         "issuer": "rnz5f1MFcgbVxzYhU5hUKbKquEJHJady5K",
         "value": "12"
@@ -111,8 +111,8 @@ from xrpl_plugin.ledger_objects import (
     make_sle,
 )
 
-sf_amount_2 = create_new_sfield(STAmount, "Amount2", 51)
-sf_account_2 = create_new_sfield(STAccount, "Account2", 52)
+sf_amount_2 = create_new_sfield(STAmount, "AmountOther", 51)
+sf_account_2 = create_new_sfield(STAccount, "AccountOther", 52)
 sf_token_swap_id = create_new_sfield(STUInt64, "TokenSwapId", 53)
 
 sfields = [
@@ -202,9 +202,9 @@ def do_apply_propose(ctx, _mPriorBalance, _mSourceBalance):
     tl_appr_send_token = ctx.view().peek(trustline_keylet(tx_acc_2, appr_token_issue))
     tl_appr_rec_token = ctx.view().peek(trustline_keylet(tx_acc_2, prop_token_issue))
 
-    # Check trustlines exist
-    if not tl_prop_send_token or not tl_prop_rec_token or not tl_appr_send_token or not tl_appr_rec_token:
-        return tecNO_LINE
+    # Check trustlines exist - !!! disable for now !!!
+    # if not tl_prop_send_token or not tl_prop_rec_token or not tl_appr_send_token or not tl_appr_rec_token:
+    #     return tecNO_LINE
     
     token_swap_keylet = new_token_swap_keylet(tx_account, acc_seq)
 
@@ -380,5 +380,3 @@ transactors = [
         do_apply=do_apply_accept,
     )
 ]
-
-
